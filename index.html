@@ -1,0 +1,368 @@
+<title>Пара на пару</title>
+<meta name="description" content="Разбор жизненных, личных и деловых ситуаций двумя ведущими. Одна ситуация — два взгляда, которые обычно не встречаются в одной комнате.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Golos+Text:wght@400;500;600;700&display=swap">
+<style>
+/* dark-first: родная среда — «ночной закрытый разбор». Светлая тема через токены. */
+:root{
+  --bg:#0E0F12; --panel:#16181D; --panel-2:#1D2027; --line:#2A2E37;
+  --ink:#F2F3F5; --ink-soft:#A5AAB4; --ink-faint:#6C717C;
+  --acc:#F5C63D; --acc-ink:#0E0F12; --acc-dim:#2a2411;
+  --he:#7FB0E6; --she:#F5C63D;
+}
+:root[data-theme="light"]{
+  --bg:#F3F4F6; --panel:#FFFFFF; --panel-2:#EAECEF; --line:#DCDFE4;
+  --ink:#12141A; --ink-soft:#535963; --ink-faint:#8A909B;
+  --acc:#C8971A; --acc-ink:#FFFFFF; --acc-dim:#F6ECC9;
+  --he:#2E5C8F; --she:#B5850E;
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]){
+    --bg:#F3F4F6; --panel:#FFFFFF; --panel-2:#EAECEF; --line:#DCDFE4;
+    --ink:#12141A; --ink-soft:#535963; --ink-faint:#8A909B;
+    --acc:#C8971A; --acc-ink:#FFFFFF; --acc-dim:#F6ECC9;
+    --he:#2E5C8F; --she:#B5850E;
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--bg);color:var(--ink);font-family:"Golos Text",system-ui,sans-serif;
+  font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1140px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:"Unbounded","Golos Text",sans-serif;line-height:1.08;text-wrap:balance;letter-spacing:-.01em}
+.eyebrow{font-family:"Golos Text";font-size:12.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--acc)}
+.acc{color:var(--acc)}
+
+header{position:sticky;top:0;z-index:60;background:color-mix(in srgb,var(--bg) 86%,transparent);
+  backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.brand{font-family:"Unbounded";font-weight:800;font-size:16px;letter-spacing:.02em;text-transform:uppercase}
+.brand i{color:var(--acc);font-style:normal}
+.nav-right{display:flex;gap:12px;align-items:center}
+.nav-cta{font-size:14px;font-weight:600;color:var(--acc-ink);background:var(--acc);padding:11px 20px;
+  border-radius:2px;text-decoration:none;transition:transform .15s}
+.nav-cta:hover{transform:translateY(-1px)}
+.tt{width:38px;height:38px;border:1px solid var(--line);background:transparent;color:var(--ink-soft);
+  border-radius:2px;cursor:pointer;font-size:15px}
+.tt:hover{border-color:var(--acc);color:var(--acc)}
+
+/* hero */
+.hero{position:relative;padding:clamp(60px,11vw,140px) 0 clamp(50px,8vw,96px);border-bottom:1px solid var(--line)}
+.hero::before{content:"";position:absolute;top:0;right:-10%;width:60%;height:100%;z-index:0;pointer-events:none;
+  background:radial-gradient(50% 60% at 70% 25%,color-mix(in srgb,var(--acc) 13%,transparent),transparent 70%)}
+.hero .wrap{position:relative;z-index:1}
+.hero h1{font-size:clamp(38px,7.4vw,88px);font-weight:800;margin:20px 0 26px}
+.hero .sub{max-width:60ch;font-size:clamp(18px,2.5vw,23px);color:var(--ink-soft);line-height:1.5}
+.hero .sub b{color:var(--ink);font-weight:600}
+.hero-cta{display:flex;flex-wrap:wrap;gap:16px;align-items:center;margin-top:38px}
+.btn{font-family:"Golos Text";font-weight:700;font-size:16px;text-decoration:none;border-radius:2px;
+  padding:17px 32px;display:inline-block;transition:transform .15s,box-shadow .2s;cursor:pointer;border:none}
+.btn-primary{background:var(--acc);color:var(--acc-ink);box-shadow:0 8px 30px color-mix(in srgb,var(--acc) 32%,transparent)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-line{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.btn-line:hover{border-color:var(--acc);color:var(--acc)}
+.hero-note{margin-top:18px;font-size:14.5px;color:var(--ink-faint);letter-spacing:.02em}
+
+/* два слоя — ядро */
+.core{padding:clamp(52px,8vw,96px) 0}
+.core-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--line);
+  border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.layer{background:var(--panel);padding:clamp(26px,4vw,44px)}
+.layer .tag{display:inline-flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.layer.he .tag{color:var(--he)} .layer.she .tag{color:var(--she)}
+.layer .tag::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor}
+.layer h3{font-family:"Golos Text";font-size:22px;font-weight:700;margin-bottom:12px;letter-spacing:0}
+.layer p{color:var(--ink-soft);font-size:16px}
+.core-mid{text-align:center;max-width:64ch;margin:34px auto 0;font-size:clamp(17px,2.3vw,20px);color:var(--ink-soft)}
+.core-mid b{color:var(--ink);font-weight:600}
+
+/* generic section */
+section{padding:clamp(52px,8vw,92px) 0}
+.shead{max-width:62ch;margin-bottom:40px}
+.shead h2{font-size:clamp(28px,4.6vw,50px);font-weight:700;margin-top:14px}
+.shead p{margin-top:16px;font-size:18px;color:var(--ink-soft)}
+.divide{border-top:1px solid var(--line)}
+
+/* для кого — две равные колонки */
+.who{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.wcol{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:clamp(24px,3.5vw,36px)}
+.wcol .h{font-family:"Unbounded";font-size:15px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.wcol.a .h{color:var(--he)} .wcol.b .h{color:var(--she)}
+.wcol ul{list-style:none;display:flex;flex-direction:column;gap:14px}
+.wcol li{display:flex;gap:12px;font-size:16.5px;color:var(--ink)}
+.wcol li::before{content:"—";color:var(--acc);font-weight:700;flex:none}
+.who-line{text-align:center;margin-top:32px;font-family:"Unbounded";font-weight:500;
+  font-size:clamp(17px,2.5vw,22px);line-height:1.3;color:var(--ink)}
+
+/* процесс */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:2px;
+  background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.step{background:var(--panel);padding:30px 26px}
+.step .num{font-family:"Unbounded";font-size:40px;font-weight:800;color:var(--acc);line-height:1}
+.step h3{font-family:"Golos Text";font-size:18px;font-weight:700;margin:16px 0 9px;letter-spacing:0}
+.step p{font-size:15px;color:var(--ink-soft);line-height:1.5}
+.step .plus{margin-top:14px;font-size:13.5px;color:var(--ink-faint)}
+
+/* чего не делаем */
+.notdo{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:clamp(28px,4vw,48px)}
+.notdo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin-top:8px}
+.nd{display:flex;gap:11px;align-items:flex-start;font-size:16px;color:var(--ink-soft)}
+.nd::before{content:"✕";color:var(--acc);font-weight:700;flex:none}
+.notdo blockquote{margin-top:32px;padding-top:28px;border-top:1px solid var(--line);
+  font-family:"Unbounded";font-weight:500;font-size:clamp(18px,2.6vw,24px);line-height:1.35;color:var(--ink)}
+
+/* ведущие */
+.hosts{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.host{background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.host .photo{aspect-ratio:4/3;background:var(--panel-2);display:grid;place-items:center;
+  color:var(--ink-faint);font-size:13px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--line);position:relative}
+.host .photo span{opacity:.6}
+.host .body{padding:clamp(22px,3vw,32px)}
+.host .role{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.host.a .role{color:var(--he)} .host.b .role{color:var(--she)}
+.host h3{font-family:"Unbounded";font-size:26px;font-weight:700;letter-spacing:0}
+.host .layer-of{font-size:14px;color:var(--acc);font-weight:600;margin-top:6px}
+.host p{margin-top:14px;font-size:15.5px;color:var(--ink-soft);line-height:1.6}
+.hosts-note{margin-top:24px;font-size:16px;color:var(--ink-soft);max-width:70ch}
+
+/* цена */
+.offer{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:clamp(32px,5vw,56px);
+  max-width:640px;margin:0 auto;text-align:center}
+.offer .price{font-family:"Unbounded";font-size:clamp(36px,6vw,56px);font-weight:800;margin:10px 0;color:var(--ink)}
+.offer .price small{font-family:"Golos Text";font-size:18px;color:var(--ink-faint);font-weight:400}
+.offer .meta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 30px;margin:20px 0 30px;font-size:15px;color:var(--ink-soft)}
+.offer .meta b{color:var(--ink)}
+.offer .hint{margin-top:18px;font-size:13.5px;color:var(--ink-faint)}
+
+/* CTA + форма */
+.cta-final{text-align:center;max-width:60ch;margin:0 auto 8px}
+.cta-final h2{font-size:clamp(28px,4.6vw,46px);font-weight:700}
+.cta-final p{margin-top:16px;font-size:18px;color:var(--ink-soft)}
+form{max-width:560px;margin:36px auto 0;display:flex;flex-direction:column;gap:15px}
+.field label{display:block;font-size:14px;font-weight:600;margin-bottom:7px}
+.field input,.field textarea{width:100%;font-family:"Golos Text";font-size:16px;color:var(--ink);background:var(--panel);
+  border:1px solid var(--line);border-radius:2px;padding:14px 16px;transition:border-color .15s}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-dim)}
+.field textarea{resize:vertical;min-height:104px}
+form .btn-primary{width:100%;text-align:center}
+.fnote{font-size:12.5px;color:var(--ink-faint);text-align:center}
+.toast{padding:16px;border-radius:2px;background:var(--acc-dim);border:1px solid var(--acc);color:var(--ink);
+  font-size:15px;text-align:center;display:none}
+.toast.show{display:block}
+
+footer{border-top:1px solid var(--line);padding:36px 0;color:var(--ink-faint);font-size:14px}
+.foot{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center}
+.foot .brand{font-size:14px}
+
+@media(max-width:720px){
+  .core-grid,.who,.hosts{grid-template-columns:1fr}
+  .nav-cta{display:none}
+}
+</style>
+
+<header>
+  <div class="wrap nav">
+    <div class="brand">Пара&nbsp;<i>на</i>&nbsp;пару</div>
+    <div class="nav-right">
+      <button class="tt" id="tt" aria-label="Тема">◐</button>
+      <a href="#zayavka" class="nav-cta">Разобрать ситуацию</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Он и она · два часа · ваша ситуация</div>
+    <h1>Одна ситуация.<br>Два взгляда, которые обычно<br>не встречаются <span class="acc">в одной комнате</span></h1>
+    <p class="sub">Вы рассказываете, что происходит. <b>Мы вдвоём разбираем это — без готового вывода, к которому идём заранее.</b> Не терапия, не коучинг. Мы не знаем ответ до встречи — мы ищем его вместе с вами.</p>
+    <div class="hero-cta">
+      <a href="#zayavka" class="btn btn-primary">Разобрать мою ситуацию</a>
+      <a href="#kak" class="btn btn-line">Как это проходит</a>
+    </div>
+    <div class="hero-note">Он и она. Ваша ситуация. Два часа честного разбора.</div>
+  </div>
+</div>
+
+<div class="core">
+  <div class="wrap">
+    <div class="eyebrow" style="margin-bottom:14px">Почему именно двое</div>
+    <div class="core-grid">
+      <div class="layer he">
+        <div class="tag">Артём слышит</div>
+        <h3>Кризисный слой</h3>
+        <p>Деньги, риск, страх, инстинкт выживания. Что на кону и чем это грозит на самом деле. Как ведёт себя человек, когда припёрт к стене.</p>
+      </div>
+      <div class="layer she">
+        <div class="tag">Настя слышит</div>
+        <h3>Структурный слой</h3>
+        <p>Роли, процессы, договорённости. Где сбоит само устройство ситуации, а не эмоции вокруг неё. Кто за что отвечает и что сломалось в механике.</p>
+      </div>
+    </div>
+    <p class="core-mid">Вы рассказываете <b>одну</b> историю. Мы слышим в ней <b>два разных слоя</b> — и когда наши трактовки расходятся, вы видите то, чего не видели сами. Потому что смотрели только одним из двух способов.</p>
+  </div>
+</div>
+
+<section id="komu" class="divide">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow">Для кого</div>
+      <h2>Сюда приходят не за помощью, а за трезвым взглядом</h2>
+      <p>Не для «слабых». Наоборот — для тех, кто привык решать всё сам, но конкретно здесь застрял.</p>
+    </div>
+    <div class="who">
+      <div class="wcol a">
+        <div class="h">Пары и личное</div>
+        <ul>
+          <li>Ругаемся об одном и том же по кругу</li>
+          <li>Не понимаю — оставаться или уходить</li>
+          <li>Не можем договориться</li>
+          <li>Не понимаю, почему человек так себя ведёт</li>
+        </ul>
+      </div>
+      <div class="wcol b">
+        <div class="h">Бизнес и партнёрство</div>
+        <ul>
+          <li>Партнёр не слышит</li>
+          <li>Тащу всё один</li>
+          <li>Не пойму — проблема во мне или в команде</li>
+          <li>Решение, где перемешаны деньги и люди</li>
+        </ul>
+      </div>
+    </div>
+    <p class="who-line">«Если вы уже десятый раз прокручиваете одну и ту же ситуацию в голове —<br><span class="acc">возможно, пора посмотреть на неё со стороны».</span></p>
+  </div>
+</section>
+
+<section id="kak" class="divide">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow">Как проходит встреча</div>
+      <h2>Два часа. От вашей истории до конкретного следующего шага</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="num">1</div><h3>Вы рассказываете</h3><p>Ситуацию как есть. Без причёсанной версии для чужих.</p></div>
+      <div class="step"><div class="num">2</div><h3>Мы задаём вопросы</h3><p>Иногда очевидные. Иногда неудобные.</p></div>
+      <div class="step"><div class="num">3</div><h3>Разбираем вдвоём</h3><p>Артём — про кризис и инстинкт, Настя — про структуру и процессы. Расходимся — не сглаживаем, показываем оба слоя.</p></div>
+      <div class="step"><div class="num">4</div><h3>Вы уходите с ясностью</h3><p>Не с готовым выводом, а с более ясной картиной и конкретным шагом.<span class="plus">Можно — с письменным резюме встречи.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<section id="nedelaem" class="divide">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow">Чтобы не было лишних ожиданий</div>
+      <h2>Чего мы не делаем</h2>
+    </div>
+    <div class="notdo">
+      <div class="notdo-grid">
+        <div class="nd">Не ставим диагнозы и не лечим</div>
+        <div class="nd">Не проводим психотерапию</div>
+        <div class="nd">Не судим, кто прав</div>
+        <div class="nd">Не заставляем разводиться или расходиться</div>
+        <div class="nd">Не миримся любой ценой</div>
+        <div class="nd">Не выдаём готовый план «как правильно жить»</div>
+      </div>
+      <blockquote>«Мы не судьи и не спасатели. Мы очень внимательно смотрим на то, что происходит, — и не притворяемся, что знаем ответ заранее».</blockquote>
+    </div>
+  </div>
+</section>
+
+<section id="kto" class="divide">
+  <div class="wrap">
+    <div class="shead">
+      <div class="eyebrow">Кто ведёт</div>
+      <h2>Не эксперты с дипломом — люди с сотнями реально прожитых и разобранных ситуаций</h2>
+    </div>
+    <div class="hosts">
+      <div class="host a">
+        <!-- ФОТО: заменить блок .photo на <img> с живым непостановочным фото -->
+        <div class="photo"><span>фото Артёма</span></div>
+        <div class="body">
+          <div class="role">Кризисный слой</div>
+          <h3>Артём</h3>
+          <div class="layer-of">деньги · риск · инстинкт под давлением</div>
+          <p>Прошёл банкротство. На пике держал 250 машин и четыре диспетчерские, каждый день разруливал конфликты между людьми, деньгами и обстоятельствами. Половина работы — ночью. Годами наблюдает за поведением людей и разбирает, почему они поступают так, а не иначе. Без позы гуру и с самоиронией по поводу собственного краха.</p>
+        </div>
+      </div>
+      <div class="host b">
+        <div class="photo"><span>фото Насти</span></div>
+        <div class="body">
+          <div class="role">Структурный слой</div>
+          <h3>Настя</h3>
+          <div class="layer-of">роли · процессы · механика решений</div>
+          <p>Несколько лет — бизнес-ассистент владельцев компаний: видела кухню принятия решений изнутри многих бизнесов. Сейчас профессионально проводит операционные разборы. Так же, как Артём, привыкла постоянно анализировать причины поведения — своего и чужого, каждый день, а не от случая к случаю.</p>
+        </div>
+      </div>
+    </div>
+    <p class="hosts-note">Общее у обоих: привычку разбирать «почему так вышло» они превратили в формат для других людей — в бизнесе, в отношениях, в кризисах.</p>
+  </div>
+</section>
+
+<section id="cena" class="divide">
+  <div class="wrap">
+    <div class="offer">
+      <div class="eyebrow">Стоимость встречи</div>
+      <!-- ЦЕНА: поменять здесь -->
+      <div class="price">[ цена ]&nbsp;<small>/ встреча</small></div>
+      <div class="meta">
+        <span><b>Длительность:</b> 2–2,5 часа</span>
+        <span><b>Ведут:</b> двое</span>
+        <span><b>Итог:</b> ясная картина + следующий шаг</span>
+      </div>
+      <a href="#zayavka" class="btn btn-primary">Записаться на разбор</a>
+      <div class="hint">На первые встречи возможна пробная цена ниже целевой.</div>
+    </div>
+  </div>
+</section>
+
+<section id="zayavka" class="divide">
+  <div class="wrap">
+    <div class="cta-final">
+      <div class="eyebrow">Заявка</div>
+      <h2>Есть ситуация, в которой вы слишком близко, чтобы увидеть её со стороны?</h2>
+      <p>Оставьте заявку и коротко опишите, что происходит. Мы посмотрим, подходит ли запрос под формат, и согласуем время.</p>
+    </div>
+    <form id="lead" novalidate>
+      <div class="field"><label for="nm">Как к вам обращаться</label><input id="nm" name="name" type="text" placeholder="Имя" required></div>
+      <div class="field"><label for="ct">Телефон или Telegram</label><input id="ct" name="contact" type="text" placeholder="+7… или @username" required></div>
+      <div class="field"><label for="sit">Коротко о ситуации</label><textarea id="sit" name="situation" placeholder="Что хотите разобрать"></textarea></div>
+      <button type="submit" class="btn btn-primary">Хочу разобрать ситуацию</button>
+      <div class="fnote">Нажимая кнопку, вы соглашаетесь на обработку контактных данных для связи по заявке.</div>
+      <div class="toast" id="toast">Заявка принята. Мы свяжемся с вами в ближайшее время.</div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div class="brand">Пара&nbsp;<i style="color:var(--acc);font-style:normal">на</i>&nbsp;пару</div>
+    <div>Разбор жизненных, личных и деловых ситуаций двумя ведущими.</div>
+    <!-- КОНТАКТЫ: поменять здесь -->
+    <div><a href="#zayavka" style="color:var(--acc);text-decoration:none">Оставить заявку →</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var tt=document.getElementById('tt');
+  function cur(){var s=null;try{s=localStorage.getItem('pnp-theme')}catch(e){}
+    if(s)return s;return matchMedia('(prefers-color-scheme:light)').matches?'light':'dark';}
+  function apply(t){document.documentElement.setAttribute('data-theme',t);tt.textContent=t==='dark'?'☾':'◐';}
+  apply(cur());
+  tt.addEventListener('click',function(){
+    var t=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+    apply(t);try{localStorage.setItem('pnp-theme',t)}catch(e){}});
+  var f=document.getElementById('lead');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(!f.name.value.trim()||!f.contact.value.trim()){f.reportValidity&&f.reportValidity();return;}
+    document.getElementById('toast').classList.add('show');
+    var b=f.querySelector('button');b.textContent='Отправлено';b.disabled=true;
+  });
+})();
+</script>
